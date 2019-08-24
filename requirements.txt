@@ -1,1 +1,7 @@
-Flask flask-sqlalchemy psycopg2 flask-migrate Flask-API flask-script pytest
+Flask
+flask-sqlalchemy
+psycopg2
+flask-migrate
+Flask-API
+flask-script 
+pytest
