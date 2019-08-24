@@ -1,2 +1,7 @@
-brew install postresql
-pip3 install Flask flask-sqlalchemy psycopg2 flask-migrate Flask-API flask-script
+Flask
+flask-sqlalchemy
+psycopg2
+flask-migrate
+Flask-API
+flask-script 
+pytest
