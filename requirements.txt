@@ -1,6 +1,6 @@
-Flask
-flask-sqlalchemy
-psycopg2
+Flask==1.1.1
+flask-sqlalchemy==2.4.0
+psycopg2==2.8.3
 flask-migrate
 Flask-API
 flask-script 
