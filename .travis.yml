@@ -1,13 +1,18 @@
 language: python
 python:
-  - "3.7"
+- '3.7'
 services:
-  - postgresql
-# command to install dependencies
+- postgresql
 install:
-  - python setup.py install
+- python setup.py install
 before_script:
-  - createdb test_db
-# command to run tests
+- createdb test_db
 script:
-  - pytest
+- pytest
+deploy:
+  provider: pypi
+  user: bribeiro
+  password:
+    secure: er5wWFOGXrYQK4CIyPdnrEoLaY02ZT1nsuCLfvUc/NCSDCnIjWkjzKAuTFDSeDgh++n8RvNHBQZA6FKWMVotXZ35HgIdjI2TcWcYzz3cXkNGxfLJ3waEqSSHsgxHAMgepE1qnS8pR+xD7aJGyr6PKrnAugAIus1tvU7lzHfA5faa8nFlGQJ+kYvj9yQpXhpfOnGhiZ1aJvCNgCydV42bj1hvmVJkr9lyDOuklkBjbTWEhZvi/dzHHf2NHmDthIt+FycxBbey3YmewERWnS8teid5X3jcB5YoR7iZldM5nrl1LLsRMZu32PhvdUZeyJgqj20Ee7wo+P5Oqa8gMDzsgcBU5tVpbwP2z3E8WdAjVfvQwholNK5H5zzM/WSk1NQd00ueIcgeSjW11FXHhkENQwym/3W2h99xlDER0L4cmb/vZ/O+ghYboICDUiEe8fm3OgWPRe0YGZSCoGHWyhvllfVK85nLkegKhP5SyfHShVE3WZpWYWMeLoU268ZQTZC1u8uXe2l6H42sUo008R9Uel+SpzFZw3tEQGEciBSZSMh4045ga0v9wwH//lC4+6Rh7XRsbr/lZywC3MFj7BZKJ7sA08UE+aTDMBa2gD0wUri4ZiD7YmxI6gYwSsnecYcgxH6Iyu5gp7blqehia6BBRMUOV9N/zZ0An+L16S71Lp8=
+  on:
+      branch: master
