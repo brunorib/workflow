@@ -33,7 +33,7 @@ def create_app(config_name):
             response.status_code = 201
             return response
 
-    @app.route('/users/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+    @app.route('/users/<int:id>/', methods=['GET', 'PUT', 'DELETE'])
     def users_id_manipulation(id, **kwargs):
      # retrieve a user using it's ID
         user = User.query.filter_by(id=id).first()
