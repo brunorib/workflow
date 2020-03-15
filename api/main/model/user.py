@@ -1,7 +1,5 @@
 # api/models.py
-
-from api import db
-
+from api.main import db
 
 class User(db.Model):
     """This class represents the users table."""
@@ -12,9 +10,10 @@ class User(db.Model):
     email = db.Column(db.String(255))
     #encrypted_account_number = db.Column(db.String(255))
 
-    def __init__(self, username, email):
+    def __init__(self, username, email, id=None):
         self.username = username
         self.email = email
+        self.id = id
 
     def save(self):
         db.session.add(self)

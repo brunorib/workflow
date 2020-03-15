@@ -8,7 +8,7 @@ install:
 before_script:
 - createdb test_db
 script:
-- pytest
+- python manage.py test
 deploy:
   provider: pypi
   user: bribeiro
