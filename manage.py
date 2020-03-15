@@ -2,6 +2,7 @@
 import os
 import unittest
 
+from werkzeug.utils import cached_property
 from flask_script import Manager # class for handling a set of commands
 from flask_migrate import Migrate, MigrateCommand
 from api.main import db, create_app
