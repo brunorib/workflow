@@ -15,6 +15,7 @@ setup(
         'Flask-API==1.1',
         'flask-script==2.0.6',
         'flask-restplus==0.13.0',
-        'pytest==5.1.1'
+        'pytest==5.1.1',
+        'Werkzeug==0.16.1'
     ]
 )
