@@ -8,6 +8,7 @@ install:
 before_script:
 - createdb test_db
 script:
+- source .env
 - python manage.py test
 deploy:
   provider: pypi

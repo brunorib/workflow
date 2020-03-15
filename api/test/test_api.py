@@ -5,13 +5,14 @@ import json
 
 from api.main import db, create_app
 from api import blueprint
+from instance.config import TestingConfig
 
 class UserTestCase(unittest.TestCase):
     """This class represents the users test case"""
 
     def setUp(self):
         """Define test variables and initialize app."""
-        self.app = create_app(config_name=os.getenv('APP_SETTINGS'))
+        self.app = create_app(config_name='testing')
         self.app.register_blueprint(blueprint)
         self.app.app_context().push()
         self.client = self.app.test_client
