@@ -11,5 +11,10 @@ Set up to develop
 3. Create flask_api database 
 'createdb flask_dev'
 
-4. Run api
+4a. Run api
+'export $(cat .env)'
 'python manage.py run'
+
+4b. Run api in container
+'docker build . -t workflow-mq:0.1.0-SNAPSHOT .'
+'docker run --env-file .env workflow-mq:0.1.0-SNAPSHOT'

@@ -2,8 +2,7 @@ from flask import request
 from flask_restplus import Resource
 
 from api.main.util.dto import UserDto
-from api.main.service.user_service import save_new_user, get_all_users, get_user, get_user_by_username, delete_user, modify_user
-
+import api.main.service.user_service as us
 api = UserDto.api
 _user = UserDto.user
 
@@ -13,7 +12,7 @@ class UserList(Resource):
     @api.marshal_list_with(_user, envelope='users')
     def get(self):
         """List all registered users"""
-        return get_all_users()
+        return us.get_all_users()
 
     @api.response(201, 'User successfully created.')
     @api.doc('create a new user')
@@ -21,7 +20,7 @@ class UserList(Resource):
     def post(self):
         """Creates a new User """
         data = request.json
-        return save_new_user(data=data)
+        return us.save_new_user(data=data)
 
 @api.route('/<id>')
 @api.param('id', 'The User identifier')
@@ -31,7 +30,7 @@ class User(Resource):
     @api.marshal_with(_user)
     def get(self, id):
         """get a user given its identifier"""
-        user = get_user(id)
+        user = us.get_user(id)
         if not user:
             api.abort(404)
         else:
@@ -43,13 +42,13 @@ class User(Resource):
     def put(self, id):
         """modify a user given its identifier"""
         to_modify = request.json
-        return modify_user(id, to_modify)
+        return us.modify_user(id, to_modify)
 
     @api.doc('delete a user')
     @api.marshal_with(_user)
     def delete(self, id):
         """delete a user given its identifier"""
-        user = delete_user(id)
+        user = us.delete_user(id)
         if not user:
             api.abort(404)
         else:
