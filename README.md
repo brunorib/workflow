@@ -18,3 +18,5 @@ Set up to develop
 4b. Run api in container
 'docker build . -t workflow-mq:0.1.0-SNAPSHOT .'
 'docker run --env-file .env workflow-mq:0.1.0-SNAPSHOT'
+
+Both runs will be on localhost:5000
