@@ -1,5 +1,6 @@
 *.pyc
 __pycache__/
 dist/
-my_user_info_api.egg-info/
+workflow.egg-info/
 .vscode/
+build/
