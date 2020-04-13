@@ -1,7 +1,7 @@
 from flask_restplus import Api
 from flask import Blueprint
 
-from api.main.controller.user_controller import api as user_ns
+from api.main.controller.commitments_controller import api as comm_ns
 
 blueprint = Blueprint('api', __name__)
 
@@ -12,4 +12,4 @@ api = Api(blueprint,
           )
           
 # Routes
-api.add_namespace(user_ns, path='/users')
+api.add_namespace(comm_ns, path='/commitments')

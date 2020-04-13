@@ -7,8 +7,8 @@ from flask_script import Manager # class for handling a set of commands
 from flask_migrate import Migrate, MigrateCommand
 from api.main import db, create_app
 from api import blueprint
-from api.main.model.user import User
 
+print(os.getenv('APP_SETTINGS'))
 app = create_app(config_name=os.getenv('APP_SETTINGS'))
 app.register_blueprint(blueprint)
 app.app_context().push()
