@@ -3,6 +3,7 @@ from flask_restplus import Resource
 
 from api.main.util.dto import CommitmentsDto
 import api.main.service.commitments_service as cs
+from api.main.service.exceptions.commitment_exception import *
 api = CommitmentsDto.api
 _commitments = CommitmentsDto.commitments
 
@@ -13,7 +14,12 @@ class CommitmentList(Resource):
     @api.expect(_commitments, validate=True)
     def post(self):
         data = request.json
-        return cs.save_commitment(data=data)
+        try:
+            cs.save_commitment(data=data)
+            return cs.get_random()
+        except IncorrectLengthException:
+            return api.abort(422)
+
         
 @api.route('/<id>')
 @api.param('id', 'The User Identifier')

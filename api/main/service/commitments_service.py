@@ -1,9 +1,15 @@
+import os
+import random
+
 from api.main.model.user_commitments import UserCommitments
 from api.main import db
+from api.main.service.exceptions.commitment_exception import IncorrectLengthException
+
+K = os.getenv("K")
 
 def save_commitment(data):
+    validate_length(data['commitments'])
     com = get_commitments_by_user_id(data['user_id'])
-    
     if com:
         com.delete()
 
@@ -20,3 +26,12 @@ def save_commitment(data):
 
 def get_commitments_by_user_id(id):
     return UserCommitments.query.filter_by(user_id=id).first()
+
+def get_random():
+    return {
+        'exclude': random.randint(0, K-1),
+    }
+
+def validate_length(commitment_list):
+    if len(commitment_list) != K:
+        raise IncorrectLengthException()
