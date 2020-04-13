@@ -20,3 +20,36 @@ Set up to develop
 'docker run --env-file .env workflow-mq:0.1.0-SNAPSHOT'
 
 Both runs will be on localhost:5000
+
+// API DESCRIPTION
+
+GET /balance/<user_id>
+
+GET /retrieve/commit/params
+returns
+params: {
+    k: N
+    id: uid
+}
+
+POST /retrieve/commit/
+{
+    id: uid
+    m: [m1, m2, ... m2k]
+}
+returns
+{
+    S: [mi, mj, ...] (len k) Subset of 2k
+}
+
+POST /retrieve/answer/
+{
+    R: [ri, rj, ...] len k
+    U: [ui, uj, ...]
+    B: [bi, bj, ...]
+}
+return
+{
+    b_sign: s
+}
+

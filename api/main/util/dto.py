@@ -1,11 +1,17 @@
 from flask_restplus import Namespace, fields
 
-from api.main.model.user import User
+class CommitmentsDto:
+    api = Namespace('commitments', description='commitments to save to verify with answers')
+    commitments = api.model('commitments', {
+        'user_id': fields.Integer(required=True, description='user which performed the commitment'),
+        'commitments': fields.List(fields.String(required=True, description='commitment'))
+    })
 
-class UserDto:
-    api = Namespace('user', description='user related operations')
-    user = api.model('user', {
-        'email': fields.String(required=True, description='user email address'),
-        'username': fields.String(required=True, description='user username'),
-        'id': fields.Integer(description='user Identifier')
+class AnswersDto:
+    api = Namespace('answers', description='answers to verify commitments')
+    answers = api.model('answers', {
+        'user_id': fields.Integer(required=True, description='user who answered'),
+        'r': fields.List(fields.String(required=True, description='random blinding factor')),
+        'u': fields.List(fields.String(required=True, description='amount to retrieve concatenated with random string')),
+        'v': fields.List(fields.String(required=True, description='id of retrieval concatenated with random string')),
     })
