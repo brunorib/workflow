@@ -1,3 +1,4 @@
+import os
 from flask import request
 from flask_restplus import Resource
 
@@ -19,6 +20,15 @@ class CommitmentList(Resource):
             return cs.get_random()
         except IncorrectLengthException:
             return api.abort(422)
+
+    
+@api.route('/k')
+class K(Resource)
+    @api.doc('get k value')
+    def get(self):
+        return {
+            'k': os.getenv('K')
+        }
 
         
 @api.route('/<id>')
