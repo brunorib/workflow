@@ -5,8 +5,6 @@ from api.main.model.user_commitments import UserCommitments
 from api.main import db
 from api.main.service.exceptions.commitment_exception import IncorrectLengthException
 
-K = os.getenv("K")
-
 def save_commitment(data):
     validate_length(data['commits'])
     com = get_commitments_by_user_id(data['user_id'])
@@ -33,5 +31,5 @@ def get_random():
     }
 
 def validate_length(commitment_list):
-    if len(commitment_list) != K:
+    if len(commitment_list) != os.getenv("K"):
         raise IncorrectLengthException()
