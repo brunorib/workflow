@@ -27,7 +27,7 @@ def get_commitments_by_user_id(id):
 
 def get_random():
     return {
-        'exclude': random.randint(0, K-1),
+        'exclude': random.randint(0, os.getenv("K")-1),
     }
 
 def validate_length(commitment_list):
