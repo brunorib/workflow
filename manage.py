@@ -8,7 +8,10 @@ from flask_migrate import Migrate, MigrateCommand
 from api.main import db, create_app
 from api import blueprint
 
-print(os.getenv('APP_SETTINGS'))
+config_name = os.getenv('APP_SETTINGS')
+if os.getenv('APP_SETTINGS') is None:
+    config_name = 'development'
+    
 app = create_app(config_name=os.getenv('APP_SETTINGS'))
 app.register_blueprint(blueprint)
 app.app_context().push()
