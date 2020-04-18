@@ -8,14 +8,14 @@ from api.main.service.exceptions.commitment_exception import IncorrectLengthExce
 K = os.getenv("K")
 
 def save_commitment(data):
-    validate_length(data['commitments'])
+    validate_length(data['commits'])
     com = get_commitments_by_user_id(data['user_id'])
     if com:
         com.delete()
 
     new_commitment = UserCommitments(
         user_id=data['user_id'],
-        commitments=data['commitments'],
+        commitments=data['commits'],
     )
     new_commitment.save()
     return {
