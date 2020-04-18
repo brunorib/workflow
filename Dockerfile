@@ -6,7 +6,7 @@ COPY . /app
 
 RUN python setup.py install
 
-RUN . ./.env
+RUN python manage.py migrate
 
 ENTRYPOINT [ "python" ]
 
