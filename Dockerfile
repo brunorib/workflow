@@ -8,4 +8,4 @@ RUN python setup.py install
 
 EXPOSE 5000
 
-CMD [ "./docker_entrypoint.sh" ]
+ENTRYPOINT [ "./docker_entrypoint.sh" ]
