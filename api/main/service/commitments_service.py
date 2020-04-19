@@ -14,7 +14,7 @@ def save_commitment(data):
     new_commitment = UserCommitments(
         user_id=data['user_id'],
         commitments=data['commits'],
-        to_exlude=get_random()
+        to_exclude=get_random()
     )
     new_commitment.save()
     return {
@@ -28,9 +28,7 @@ def get_commitments_by_user_id(id):
     return UserCommitments.query.filter_by(user_id=id).first()
 
 def get_random():
-    return {
-        'exclude': random.randint(0, get_k()-1),
-    }
+    return random.randint(0, get_k()-1)
 
 def validate_length(commitment_list):
     k = get_k()
