@@ -2,6 +2,7 @@ from flask_restplus import Api
 from flask import Blueprint
 
 from api.main.controller.commitments_controller import api as comm_ns
+from api.main.controller.answers_controller import api as ans_ns
 
 blueprint = Blueprint('api', __name__)
 
@@ -13,3 +14,4 @@ api = Api(blueprint,
           
 # Routes
 api.add_namespace(comm_ns, path='/commitments')
+api.add_namespace(ans_ns, path='/answers')

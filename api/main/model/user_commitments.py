@@ -8,10 +8,12 @@ class UserCommitments(db.Model):
 
     user_id = db.Column(db.Integer, primary_key=True)
     commitments = db.Column(db.JSON)
+    to_exclude = db.Column(db.Integer)
 
-    def __init__(self, user_id, commitments):
+    def __init__(self, user_id, commitments, to_exclude):
         self.user_id = user_id
         self.commitments = json.dumps(commitments)
+        self.to_exclude = to_exclude
 
     def save(self):
         db.session.add(self)

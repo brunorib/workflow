@@ -16,8 +16,7 @@ class CommitmentList(Resource):
     def post(self):
         data = request.json
         try:
-            cs.save_commitment(data=data)
-            return cs.get_random()
+            return cs.save_commitment(data=data)
         except IncorrectLengthException as e:
             return api.abort(422, custom=str(e))
 

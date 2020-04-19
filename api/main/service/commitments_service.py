@@ -14,12 +14,14 @@ def save_commitment(data):
     new_commitment = UserCommitments(
         user_id=data['user_id'],
         commitments=data['commits'],
+        to_exlude=get_random()
     )
     new_commitment.save()
     return {
         'status': 'success',
         'message': 'Successfully saved commitment.',
-        'user_id': new_commitment.user_id
+        'user_id': new_commitment.user_id,
+        'to_exclude_answers': new_commitment.to_exclude
     }
 
 def get_commitments_by_user_id(id):
