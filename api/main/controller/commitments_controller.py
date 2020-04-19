@@ -18,8 +18,8 @@ class CommitmentList(Resource):
         try:
             cs.save_commitment(data=data)
             return cs.get_random()
-        except IncorrectLengthException:
-            return api.abort(422)
+        except IncorrectLengthException as e:
+            return api.abort(422, custom=str(e))
 
     
 @api.route('/k')

@@ -31,5 +31,6 @@ def get_random():
     }
 
 def validate_length(commitment_list):
-    if len(commitment_list) != os.getenv("K"):
-        raise IncorrectLengthException()
+    k = os.getenv("K")
+    if len(commitment_list) != k:
+        raise IncorrectLengthException("Number of commitments incorrect, required: %s - found: %s"%(k, len(commitment_list)))
