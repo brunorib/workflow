@@ -12,7 +12,7 @@ def verify_answers(data):
     if not user_coms:
         raise NoCommitmentException("No previous commitment for this user")
 
-    commitments = user_coms.commitments
+    commitments = user_coms.get_commitments()
     validate_length(data['answers'], commitments)
 
     to_blind_sign = commitments.pop(user_coms.to_exclude)

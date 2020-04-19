@@ -15,6 +15,9 @@ class UserCommitments(db.Model):
         self.commitments = json.dumps(commitments)
         self.to_exclude = to_exclude
 
+    def get_commitments(self):
+        return json.loads(self.commitments)
+
     def save(self):
         db.session.add(self)
         db.session.commit()
