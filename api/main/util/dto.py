@@ -9,11 +9,12 @@ class CommitmentsDto:
 
 class AnswersDto:
     api = Namespace('answers', description='answers to verify commitments')
+    answer = api.model('answer', {
+        'blinding': fields.List(fields.String(required=True, description='random blinding factor')),
+        'amount': fields.List(fields.String(required=True, description='amount to retrieve concatenated with random string')),
+        'id': fields.List(fields.String(required=True, description='id of retrieval concatenated with random string')),
+    })
     answers = api.model('answers', {
         'user_id': fields.Integer(required=True, description='user who answered'),
-        'answers': fields.List({
-        'blinding': fields.String(required=True, description='random blinding factor'),
-        'amount': fields.String(required=True, description='amount to retrieve concatenated with random string'),
-        'id': fields.String(required=True, description='id of retrieval concatenated with random string'),
-        })
+        'answers': fields.List(fields.Nested(answer))
     })
