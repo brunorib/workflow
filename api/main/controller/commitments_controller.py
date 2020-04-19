@@ -23,7 +23,7 @@ class CommitmentList(Resource):
 
     
 @api.route('/k')
-class K(Resource)
+class K(Resource):
     @api.doc('get k value')
     def get(self):
         return {
