@@ -36,10 +36,3 @@ class RpcClient(object):
         while self.response is None:
             self.connection.process_data_events()
         return self.response
-
-client = None
-
-def get_client():
-    if not client:
-        client = RpcClient(os.getenv('RABBIT_MQ_URL'))
-    return client

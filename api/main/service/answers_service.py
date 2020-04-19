@@ -2,10 +2,15 @@ import os
 import random
 
 import api.main.service.commitments_service as cs
-import api.main.service.rpc_service as rs
+from api.main.service.rpc_service import RpcClient
 from api.main.model.user_commitments import UserCommitments
 from api.main import db
 from api.main.service.exceptions.commitment_exception import *
+
+client = None
+rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
+if rabbit_mq_url:
+    client = RpcClient(rabbit_mq_url)
 
 def verify_answers(data):
     user_coms = cs.get_commitments_by_user_id(data['user_id'])
@@ -18,7 +23,6 @@ def verify_answers(data):
     to_blind_sign = commitments.pop(user_coms.to_exclude)
 
     # AMQP CONNECTION TO WORKER
-    client = rs.get_client()
     request = {
         "action": "checkFair",
         "payload": {
