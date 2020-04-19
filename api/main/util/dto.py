@@ -4,7 +4,7 @@ class CommitmentsDto:
     api = Namespace('commitments', description='commitments to save to verify with answers')
     commitments = api.model('commitments', {
         'user_id': fields.Integer(required=True, description='user which performed the commitment'),
-        'commitments': fields.List(fields.String(required=True, description='commitment'))
+        'commits': fields.List(fields.String(required=True, description='commitment'))
     })
 
 class AnswersDto:
