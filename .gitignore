@@ -1,6 +1,6 @@
 *.pyc
 __pycache__/
 dist/
-workflow-mq.egg-info/
+workflow_mq.egg-info/
 .vscode/
 build/
