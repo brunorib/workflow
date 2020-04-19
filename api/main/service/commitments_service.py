@@ -27,10 +27,14 @@ def get_commitments_by_user_id(id):
 
 def get_random():
     return {
-        'exclude': random.randint(0, os.getenv("K")-1),
+        'exclude': random.randint(0, get_k()-1),
     }
 
 def validate_length(commitment_list):
-    k = os.getenv("K")
+    k = get_k()
     if len(commitment_list) != k:
         raise IncorrectLengthException("Number of commitments incorrect, required: %s - found: %s"%(k, len(commitment_list)))
+
+def get_k():
+    k = os.getenv("K")
+    return int(k)
