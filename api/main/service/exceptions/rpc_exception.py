@@ -1,0 +1,2 @@
+class RPCClientException(Exception):
+    pass
