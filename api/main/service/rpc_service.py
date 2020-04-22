@@ -1,6 +1,7 @@
 import pika
 import uuid
 import os
+import json
 
 class RpcClient(object):
 
@@ -22,7 +23,7 @@ class RpcClient(object):
         if self.corr_id == props.correlation_id:
             self.response = body
 
-    def call(self, json):
+    def call(self, json_object):
         self.response = None
         self.corr_id = str(uuid.uuid4())
         self.channel.basic_publish(
@@ -32,7 +33,7 @@ class RpcClient(object):
                 reply_to=self.callback_queue,
                 correlation_id=self.corr_id,
             ),
-            body=str(json))
+            body=json.dumps(json_object))
         while self.response is None:
             self.connection.process_data_events()
         return self.response
