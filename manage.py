@@ -7,6 +7,10 @@ from flask_script import Manager # class for handling a set of commands
 from flask_migrate import Migrate, MigrateCommand
 from api.main import db, create_app
 from api import blueprint
+import ptvsd
+
+address = ('0.0.0.0', 3000)
+ptvsd.enable_attach('my_secret', address)
 
 config_name = os.getenv('APP_SETTINGS')
 if os.getenv('APP_SETTINGS') is None:
