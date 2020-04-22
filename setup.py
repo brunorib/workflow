@@ -17,6 +17,7 @@ setup(
         'flask-restplus==0.13.0',
         'pytest==5.1.1',
         'Werkzeug==0.16.1',
-        'pika==1.1.0'
+        'pika==1.1.0',
+        'ptvsd==3.0.0'
     ]
 )
