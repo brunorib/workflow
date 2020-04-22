@@ -9,7 +9,7 @@ from api.main import db, create_app
 from api import blueprint
 import ptvsd
 
-address = ('0.0.0.0', 3000)
+address = ('0.0.0.0', 3050)
 ptvsd.enable_attach('my_secret', address)
 
 config_name = os.getenv('APP_SETTINGS')
