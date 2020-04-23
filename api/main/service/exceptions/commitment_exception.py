@@ -3,3 +3,6 @@ class IncorrectLengthException(Exception):
 
 class NoCommitmentException(Exception):
     pass
+
+class MaxAllowedRenewalsException(Exception):
+    pass
