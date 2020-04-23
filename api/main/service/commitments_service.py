@@ -16,7 +16,7 @@ def save_commitment(user_id, commitments):
             return com
         else:
             com.delete()
-            count = com.count
+            count = com.count + 1
     
     if count > MAX_ALLOWED_RENEWALS:
         raise MaxAllowedRenewalsException("The user can't make more commitments before answering. Contact bank.")
