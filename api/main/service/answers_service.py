@@ -9,6 +9,7 @@ from api.main.model.user_commitments import UserCommitments
 from api.main import db
 from api.main.service.exceptions.commitment_exception import *
 from api.main.service.exceptions.rpc_exception import *
+from api.main.util import logger
 
 def get_client():
     client = None
@@ -31,6 +32,7 @@ def verify_answers(data):
     to_blind_sign = commitments.pop(user_coms.to_exclude)
 
     # AMQP CONNECTION TO WORKER
+    logger.info("Started getting AMQP Client")
     RPC_CLIENT = get_client()
     if RPC_CLIENT:
         request = {
@@ -42,12 +44,15 @@ def verify_answers(data):
             },
         }
 
+        logger.info("Sending request")
         corr_id = RPC_CLIENT.send_request(json.dumps(request))
 
         # Wait until we have received a response.
         while RPC_CLIENT.queue[corr_id] is None:
+            logger.info("Waiting request")
             sleep(0.1)
 
+        logger.info("Got message")
         # Return the response to the user.
         return RPC_CLIENT.queue[corr_id]
     else:
