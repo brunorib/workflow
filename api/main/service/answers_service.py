@@ -18,7 +18,7 @@ def get_client():
     if rabbit_mq_rpc_queue is None:
         rabbit_mq_rpc_queue = 'rpc_queue'
     if rabbit_mq_url:
-        client = RpcClient(rabbit_mq_url, rabbit_mq_url)
+        client = RpcClient(rabbit_mq_url, rabbit_mq_rpc_queue)
     return client
 
 def verify_answers(data):
