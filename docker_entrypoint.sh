@@ -9,4 +9,4 @@ python manage.py db upgrade
 
 # Start server
 echo "Starting server"
-python manage.py run
+python manage.py run --no-reload --with-threads
