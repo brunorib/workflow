@@ -50,7 +50,7 @@ def verify_answers(data):
         # Wait until we have received a response.
         while RPC_CLIENT.queue[corr_id] is None:
             logger.info("Waiting request")
-            sleep(0.1)
+            sleep(3)
 
         logger.info("Got message")
         # Return the response to the user.
