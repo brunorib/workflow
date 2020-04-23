@@ -3,7 +3,7 @@ import random
 
 from api.main.model.user_commitments import UserCommitments
 from api.main import db
-from api.main.service.exceptions.commitment_exception import IncorrectLengthException
+from api.main.service.exceptions.commitment_exception import *
 
 MAX_ALLOWED_RENEWALS=3
 
