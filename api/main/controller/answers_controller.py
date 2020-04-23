@@ -14,6 +14,6 @@ class AnswerList(Resource):
     def post(self):
         data = request.json
         try:
-            return ans.verify_answers(data=data)
+            return ans.verify_answers(user_id=data['user_id'], answers=data['answers'])
         except Exception as e:
             return api.abort(422, custom=str(e))

@@ -1,0 +1,2 @@
+class AnswersNotVerifiedException(Exception):
+    pass

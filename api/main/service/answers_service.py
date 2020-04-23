@@ -9,6 +9,7 @@ from api.main.model.user_commitments import UserCommitments
 from api.main import db
 from api.main.service.exceptions.commitment_exception import *
 from api.main.service.exceptions.rpc_exception import *
+from api.main.service.exceptions.answer_exception import *
 from api.main.util import logger
 
 def get_client():
@@ -21,13 +22,13 @@ def get_client():
         client = RpcClient(rabbit_mq_url, rabbit_mq_rpc_queue)
     return client
 
-def verify_answers(data):
-    user_coms = cs.get_commitments_by_user_id(data['user_id'])
+def verify_answers(user_id, answers):
+    user_coms = cs.get_commitments_by_user_id(user_id)
     if not user_coms:
         raise NoCommitmentException("No previous commitment for this user")
 
     commitments = user_coms.get_commitments()
-    validate_length(data['answers'], commitments)
+    validate_length(answers, commitments)
 
     to_blind_sign = commitments.pop(user_coms.to_exclude)
 
@@ -39,7 +40,7 @@ def verify_answers(data):
             "action": "checkFair",
             "payload": {
                 "to_blind_sign": to_blind_sign,
-                "to_verify": data['answers'],
+                "to_verify": answers,
                 "m_commitments": commitments
             },
         }
@@ -54,7 +55,13 @@ def verify_answers(data):
 
         logger.info("Received response")
         # Return the response to the user.
-        return json.loads(RPC_CLIENT.queue[corr_id])
+        response = json.loads(RPC_CLIENT.queue[corr_id])
+        if 'blind_signature' in response:
+            logger.info("Answers verified successfully")
+            cs.delete_commitments_by_user_id(user_id)
+            return response
+        else:
+            raise AnswersNotVerifiedException("Wrong answers for saved commitments")
     else:
         raise RPCClientException()
 

@@ -9,11 +9,13 @@ class UserCommitments(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     commitments = db.Column(db.JSON)
     to_exclude = db.Column(db.Integer)
+    count = db.Column(db.Integer)
 
-    def __init__(self, user_id, commitments, to_exclude):
+    def __init__(self, user_id, commitments, to_exclude, count):
         self.user_id = user_id
         self.commitments = json.dumps(commitments)
         self.to_exclude = to_exclude
+        self.count = count
 
     def get_commitments(self):
         return json.loads(self.commitments)

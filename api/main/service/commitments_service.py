@@ -5,16 +5,27 @@ from api.main.model.user_commitments import UserCommitments
 from api.main import db
 from api.main.service.exceptions.commitment_exception import IncorrectLengthException
 
-def save_commitment(data):
-    validate_length(data['commits'])
-    com = get_commitments_by_user_id(data['user_id'])
+MAX_ALLOWED_RENEWALS=3
+
+def save_commitment(user_id, commitments):
+    validate_length(commitments)
+    com = get_commitments_by_user_id(user_id)
+    count = 0
     if com:
-        com.delete()
+        if is_same_commitment(com, commitments):
+            return com
+        else:
+            com.delete()
+            count = com.count
+    
+    if count > MAX_ALLOWED_RENEWALS:
+        raise MaxAllowedRenewalsException("The user can't make more commitments before answering. Contact bank.")
 
     new_commitment = UserCommitments(
-        user_id=data['user_id'],
-        commitments=data['commits'],
-        to_exclude=get_random()
+        user_id=user_id,
+        commitments=commitments,
+        to_exclude=get_random(),
+        count=count
     )
     new_commitment.save()
     return {
@@ -27,8 +38,16 @@ def save_commitment(data):
 def get_commitments_by_user_id(id):
     return UserCommitments.query.filter_by(user_id=id).first()
 
+def delete_commitments_by_user_id(id):
+    UserCommitments.query.filter_by(user_id=id).first().delete()
+
 def get_random():
     return random.randint(0, get_k()-1)
+
+def is_same_commitment(com1, com2):
+    if com1 == com2:
+        return True
+    return False
 
 def validate_length(commitment_list):
     k = get_k()

@@ -16,7 +16,7 @@ class CommitmentList(Resource):
     def post(self):
         data = request.json
         try:
-            return cs.save_commitment(data=data)
+            return cs.save_commitment(user_id=data['user_id'], commitments=data['commits'])
         except IncorrectLengthException as e:
             return api.abort(422, custom=str(e))
 
