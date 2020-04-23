@@ -4,6 +4,8 @@ from flask_restplus import Resource
 
 from api.main.util.dto import AnswersDto
 import api.main.service.answers_service as ans
+from api.main.service.exceptions.commitment_exception import *
+from api.main.service.exceptions.answer_exception import *
 api = AnswersDto.api
 _answers = AnswersDto.answers
 
@@ -15,5 +17,5 @@ class AnswerList(Resource):
         data = request.json
         try:
             return ans.verify_answers(user_id=data['user_id'], answers=data['answers'])
-        except Exception as e:
+        except (MaxAllowedRenewalsException, NoCommitmentException, IncorrectLengthException) as e:
             return api.abort(422, custom=str(e))

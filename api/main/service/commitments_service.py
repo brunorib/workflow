@@ -15,11 +15,10 @@ def save_commitment(user_id, commitments):
         if is_same_commitment(com, commitments):
             return com
         else:
-            com.delete()
             count = com.count + 1
-    
-    if count > MAX_ALLOWED_RENEWALS:
-        raise MaxAllowedRenewalsException("The user can't make more commitments before answering. Contact bank.")
+            if count > MAX_ALLOWED_RENEWALS:
+                raise MaxAllowedRenewalsException("The user can't make more commitments before answering. Contact bank.")
+            com.delete()
 
     new_commitment = UserCommitments(
         user_id=user_id,

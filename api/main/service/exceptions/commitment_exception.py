@@ -1,8 +1,8 @@
 class IncorrectLengthException(Exception):
     pass
 
-class NoCommitmentException(Exception):
+class MaxAllowedRenewalsException(Exception):
     pass
 
-class MaxAllowedRenewalsException(Exception):
+class NoCommitmentException(Exception):
     pass

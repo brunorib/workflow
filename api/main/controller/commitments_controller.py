@@ -17,7 +17,7 @@ class CommitmentList(Resource):
         data = request.json
         try:
             return cs.save_commitment(user_id=data['user_id'], commitments=data['commits'])
-        except IncorrectLengthException as e:
+        except (IncorrectLengthException, MaxAllowedRenewalsException) as e:
             return api.abort(422, custom=str(e))
 
     
