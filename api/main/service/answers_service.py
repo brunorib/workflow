@@ -48,13 +48,13 @@ def verify_answers(data):
         corr_id = RPC_CLIENT.send_request(json.dumps(request))
 
         # Wait until we have received a response.
+        # TODO: create timeout
         while RPC_CLIENT.queue[corr_id] is None:
-            logger.info("Waiting request")
-            sleep(3)
+            sleep(0.1)
 
-        logger.info("Got message")
+        logger.info("Received response")
         # Return the response to the user.
-        return RPC_CLIENT.queue[corr_id]
+        return json.loads(RPC_CLIENT.queue[corr_id])
     else:
         raise RPCClientException()
 
