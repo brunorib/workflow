@@ -1,44 +1,63 @@
-import pika
-import uuid
 import os
-import json
+import threading
+
+import amqpstorm
+from amqpstorm import Message
 
 class RpcClient(object):
+    """Asynchronous Rpc client."""
 
-    def __init__(self, url):
-        self.connection = pika.BlockingConnection(
-            pika.URLParameters(url))
+    def __init__(self, url, rpc_queue):
+        self.queue = {}
+        self.url = url
+        self.channel = None
+        self.connection = None
+        self.callback_queue = None
+        self.rpc_queue = rpc_queue
+        self.open()
 
+    def open(self):
+        """Open Connection."""
+        self.connection = amqpstorm.UriConnection(
+            self.url
+        )
         self.channel = self.connection.channel()
+        self.channel.queue.declare(self.rpc_queue)
+        result = self.channel.queue.declare(exclusive=True)
+        self.callback_queue = result['queue']
+        self.channel.basic.consume(self._on_response, no_ack=True,
+                                   queue=self.callback_queue)
+        self._create_process_thread()
 
-        result = self.channel.queue_declare(queue='callback', exclusive=True)
-        self.callback_queue = result.method.queue
+    def _create_process_thread(self):
+        """Create a thread responsible for consuming messages in response
+         to RPC requests.
+        """
+        thread = threading.Thread(target=self._process_data_events)
+        thread.setDaemon(True)
+        thread.start()
 
-        print("instantiation")
+    def _process_data_events(self):
+        """Process Data Events using the Process Thread."""
+        self.channel.start_consuming()
 
-        self.channel.basic_consume(
-            queue=self.callback_queue,
-            on_message_callback=self.on_response,
-            auto_ack=True)
-        print("instantiation2")
+    def _on_response(self, message):
+        """On Response store the message with the correlation id in a local
+         dictionary.
+        """
+        self.queue[message.correlation_id] = message.body
 
-    def on_response(self, ch, method, props, body):
-        if self.corr_id == props.correlation_id:
-            self.response = body
+    def send_request(self, payload):
+        # Create the Message object.
+        message = Message.create(self.channel, payload)
+        message.reply_to = self.callback_queue
 
-    def call(self, json_object):
-        self.response = None
-        print("call")
-        self.corr_id = str(uuid.uuid4())
-        self.channel.basic_publish(
-            exchange='',
-            routing_key='rpc_queue',
-            properties=pika.BasicProperties(
-                reply_to=self.callback_queue,
-                correlation_id=self.corr_id,
-            ),
-            body=json.dumps(json_object))
-        print("call2")
-        while self.response is None:
-            self.connection.process_data_events()
-        return self.response
+        # Create an entry in our local dictionary, using the automatically
+        # generated correlation_id as our key.
+        self.queue[message.correlation_id] = None
+
+        # Publish the RPC request.
+        message.publish(routing_key=self.rpc_queue)
+
+        # Return the Unique ID used to identify the request.
+        return message.correlation_id

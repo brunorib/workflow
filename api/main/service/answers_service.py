@@ -1,5 +1,7 @@
 import os
 import random
+import json
+from time import sleep
 
 import api.main.service.commitments_service as cs
 from api.main.service.rpc_service import RpcClient
@@ -11,8 +13,11 @@ from api.main.service.exceptions.rpc_exception import *
 def get_client():
     client = None
     rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
+    rabbit_mq_rpc_queue = os.getenv('RABBIT_MQ_QUEUE')
+    if rabbit_mq_rpc_queue is None:
+        rabbit_mq_rpc_queue = 'rpc_queue'
     if rabbit_mq_url:
-        client = RpcClient(rabbit_mq_url)
+        client = RpcClient(rabbit_mq_url, rabbit_mq_url)
     return client
 
 def verify_answers(data):
@@ -26,8 +31,8 @@ def verify_answers(data):
     to_blind_sign = commitments.pop(user_coms.to_exclude)
 
     # AMQP CONNECTION TO WORKER
-    client = get_client()
-    if client:
+    RPC_CLIENT = get_client()
+    if RPC_CLIENT:
         request = {
             "action": "checkFair",
             "payload": {
@@ -36,8 +41,15 @@ def verify_answers(data):
                 "m_commitments": commitments
             },
         }
-        result = client.call(request)
-        return result
+
+        corr_id = RPC_CLIENT.send_request(json.dumps(request))
+
+        # Wait until we have received a response.
+        while RPC_CLIENT.queue[corr_id] is None:
+            sleep(0.1)
+
+        # Return the response to the user.
+        return RPC_CLIENT.queue[corr_id]
     else:
         raise RPCClientException()
 
