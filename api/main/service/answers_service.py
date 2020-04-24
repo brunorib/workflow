@@ -61,7 +61,7 @@ def verify_answers(user_id, answers):
             cs.delete_commitments_by_user_id(user_id)
             return response
         else:
-            raise AnswersNotVerifiedException("Wrong answers for saved commitments")
+            raise AnswersNotVerifiedException(response["message"])
     else:
         raise RPCClientException()
 
