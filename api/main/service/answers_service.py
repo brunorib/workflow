@@ -6,6 +6,7 @@ from time import sleep
 import api.main.service.commitments_service as cs
 from api.main.service.rpc_service import RpcClient
 from api.main.model.user_commitments import UserCommitments
+from api.main.model.commitments_history import CommitmentsHistory
 from api.main import db
 from api.main.service.exceptions.commitment_exception import *
 from api.main.service.exceptions.rpc_exception import *
@@ -58,7 +59,12 @@ def verify_answers(user_id, answers):
         response = json.loads(RPC_CLIENT.queue[corr_id])
         if 'blind_signature' in response:
             logger.info("Answers verified successfully")
-            cs.delete_commitments_by_user_id(user_id)
+            user_coms.delete()
+            history = CommitmentsHistory(
+                user_id=user_id,
+                commitments=commitments
+            )
+            history.save()
             return response
         else:
             raise AnswersNotVerifiedException(response["message"])

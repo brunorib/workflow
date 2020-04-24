@@ -2,6 +2,7 @@ import os
 import random
 
 from api.main.model.user_commitments import UserCommitments
+from api.main.model.commitments_history import CommitmentsHistory
 from api.main import db
 from api.main.service.exceptions.commitment_exception import *
 from api.main.util import logger
@@ -10,6 +11,14 @@ MAX_ALLOWED_RENEWALS=3
 
 def save_commitment(user_id, commitments):
     validate_length(commitments)
+
+    done_commitments = get_commitments_history(user_id)
+    if done_commitments:
+        for done_commitment in done_commitments:
+            com = done_commitment.get_commitments()
+            if is_same_commitment(com, commitments):
+                raise AlreadyUsedCommitmentException("This commitment has already been used to retrieve.")
+    
     com = get_commitments_by_user_id(user_id)
     count = 0
     if com:
@@ -35,8 +44,9 @@ def save_commitment(user_id, commitments):
 def get_commitments_by_user_id(id):
     return UserCommitments.query.filter_by(user_id=id).first()
 
-def delete_commitments_by_user_id(id):
-    UserCommitments.query.filter_by(user_id=id).first().delete()
+
+def get_commitments_history(id):
+    return CommitmentsHistory.query.filter_by(user_id=id)
 
 def get_random():
     return random.randint(0, get_k()-1)

@@ -23,7 +23,7 @@ class CommitmentList(Resource):
                 'user_id': com.user_id,
                 'to_exclude_answers': com.to_exclude
             }
-        except (IncorrectLengthException, MaxAllowedRenewalsException) as e:
+        except (IncorrectLengthException, MaxAllowedRenewalsException, AlreadyUsedCommitmentException) as e:
             return api.abort(422, custom=str(e))
 
     

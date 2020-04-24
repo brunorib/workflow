@@ -6,3 +6,6 @@ class MaxAllowedRenewalsException(Exception):
 
 class NoCommitmentException(Exception):
     pass
+
+class AlreadyUsedCommitmentException(Exception):
+    pass
