@@ -4,6 +4,7 @@ import random
 from api.main.model.user_commitments import UserCommitments
 from api.main import db
 from api.main.service.exceptions.commitment_exception import *
+from api.main.util import logger
 
 MAX_ALLOWED_RENEWALS=3
 
@@ -46,6 +47,7 @@ def get_random():
 def is_same_commitment(com1, com2):
     if com1 == com2:
         return True
+    logger.info('com1: [%s]\ncom2: [%s]' % (','.join(map(str, com1), ','.join(map(str, com2)))
     return False
 
 def validate_length(commitment_list):
