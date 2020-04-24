@@ -18,7 +18,7 @@ def get_balance_by_user_id(id):
     balance = UserBalances.query.filter_by(user_id=id).first()
     if not balance:
         balance = UserBalances(
-            user_id=user_id,
+            user_id=id,
             money=0
         )
     return balance
