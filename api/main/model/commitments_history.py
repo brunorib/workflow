@@ -3,8 +3,8 @@ import json
 from api.main import db
 
 class CommitmentsHistory(db.Model):
-    """This class represents the commitments for a user."""
-    __tablename__ = 'commitments'
+    """This class represents the hisotry of successful commitments for a user."""
+    __tablename__ = 'history'
 
     user_id = db.Column(db.Integer, primary_key=True)
     commitments = db.Column(db.JSON)
