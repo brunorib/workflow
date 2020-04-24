@@ -18,3 +18,9 @@ class AnswersDto:
         'user_id': fields.Integer(required=True, description='user who answered'),
         'answers': fields.List(fields.Nested(answer))
     })
+
+class BalanceDto:
+    api = Namespace('balances', description='balances representing each users money')
+    ingress = api.model('ingress', {
+        'amount': fields.String(required=True, description='quantity to ingress in the bank'),
+    })

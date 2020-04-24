@@ -1,0 +1,2 @@
+class NoSufficientMoneyException(Exception):
+    pass
