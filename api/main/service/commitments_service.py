@@ -13,7 +13,8 @@ def save_commitment(user_id, commitments):
     com = get_commitments_by_user_id(user_id)
     count = 0
     if com:
-        if is_same_commitment(com, commitments):
+        saved_coms = com.get_commitemtments()
+        if is_same_commitment(saved_coms, commitments):
             return com
         else:
             count = com.count + 1
