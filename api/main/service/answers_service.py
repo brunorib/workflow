@@ -29,6 +29,7 @@ def verify_answers(user_id, answers):
         raise NoCommitmentException("No previous commitment for this user")
 
     commitments = user_coms.get_commitments()
+    to_save_history = commitments.copy()
     validate_length(answers, commitments)
 
     to_blind_sign = commitments.pop(user_coms.to_exclude)
@@ -62,7 +63,7 @@ def verify_answers(user_id, answers):
             user_coms.delete()
             history = CommitmentsHistory(
                 user_id=user_id,
-                commitments=commitments
+                commitments=to_save_history
             )
             history.save()
             return response
