@@ -16,7 +16,13 @@ class CommitmentList(Resource):
     def post(self):
         data = request.json
         try:
-            return cs.save_commitment(user_id=data['user_id'], commitments=data['commits'])
+            com = cs.save_commitment(user_id=data['user_id'], commitments=data['commits'])
+            return {
+                'status': 'success',
+                'message': 'Successfully saved commitment.',
+                'user_id': com.user_id,
+                'to_exclude_answers': com.to_exclude
+            }
         except (IncorrectLengthException, MaxAllowedRenewalsException) as e:
             return api.abort(422, custom=str(e))
 
