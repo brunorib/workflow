@@ -45,7 +45,7 @@ def is_same_commitment(com1, com2):
     if com1 == com2:
         return True
 
-    logger.info('com1: [%s]\ncom2: [%s]' % (','.join(com1), ','.join(com2)))
+    logger.debug('com1: [%s]\ncom2: [%s]' % (','.join(com1), ','.join(com2)))
     return False
 
 def validate_length(commitment_list):

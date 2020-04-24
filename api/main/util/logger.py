@@ -10,3 +10,6 @@ def warn(message):
 
 def error(message):
     return logging.error(message)
+
+def debug(message):
+    return logging.debug(message)
