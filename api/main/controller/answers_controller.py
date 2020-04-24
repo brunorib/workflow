@@ -17,5 +17,5 @@ class AnswerList(Resource):
         data = request.json
         try:
             return ans.verify_answers(user_id=data['user_id'], answers=data['answers'])
-        except (MaxAllowedRenewalsException, NoCommitmentException, IncorrectLengthException) as e:
+        except (MaxAllowedRenewalsException, NoCommitmentException, IncorrectLengthException, AnswersNotVerifiedException) as e:
             return api.abort(422, custom=str(e))
