@@ -47,7 +47,8 @@ def get_random():
 def is_same_commitment(com1, com2):
     if com1 == com2:
         return True
-    logger.info('com1: [%s]\ncom2: [%s]' % (','.join(map(str, com1), ','.join(map(str, com2)))
+
+    logger.info('com1: [%s]\ncom2: [%s]' % (','.join(map(str, com1), ','.join(map(str, com2)))))
     return False
 
 def validate_length(commitment_list):
