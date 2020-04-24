@@ -16,4 +16,4 @@ api = Api(blueprint,
 # Routes
 api.add_namespace(comm_ns, path='/commitments')
 api.add_namespace(ans_ns, path='/answers')
-api.add_namespace(bal__ns, path='/balance')
+api.add_namespace(bal__ns, path='/balances')
