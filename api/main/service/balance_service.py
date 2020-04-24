@@ -21,5 +21,6 @@ def get_balance_by_user_id(id):
             user_id=id,
             money=0
         )
+        balance.save()
     return balance
 
