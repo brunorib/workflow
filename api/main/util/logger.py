@@ -1,6 +1,15 @@
 import logging
+import os
 
-logging.basicConfig(level=logging.INFO)
+def switch(case):
+   sw = {
+      "INFO": logging.INFO,
+      "DEBUG": logging.DEBUG,
+      "ERROR": logging.ERROR,
+   }
+   return sw.get(case, logging.INFO)
+
+logging.basicConfig(level=switch(os.getenv("LOG_LEVEL")))
 
 def info(message):
     return logging.info(message)
