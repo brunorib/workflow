@@ -8,6 +8,7 @@ from api.main import db
 from api.main.util import logger
 from api.main.service.rpc_service import get_client
 from api.main.service.exceptions.rpc_exception import *
+from api.main.service.exceptions.balance_exception import *
 
 CONCAT = "|"
 
