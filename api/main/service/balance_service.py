@@ -13,6 +13,13 @@ def ingress(user_id, amount):
     logger.debug("Successfully added")
     return current
     
+def subtract(user_id, amount):
+    logger.debug("Subtracting amount to user's balance")
+    current = get_balance_by_user_id(user_id)
+    current.subtract(amount)
+    current.save()
+    logger.debug("Successfully subtracted")
+    return current
 
 def get_balance_by_user_id(id):
     balance = UserBalances.query.filter_by(user_id=id).first()

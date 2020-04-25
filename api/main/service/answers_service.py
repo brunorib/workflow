@@ -4,9 +4,11 @@ import json
 from time import sleep
 
 import api.main.service.commitments_service as cs
+import api.main.service.balance_service as bs
 from api.main.service.rpc_service import RpcClient
 from api.main.model.user_commitments import UserCommitments
 from api.main.model.commitments_history import CommitmentsHistory
+from api.main.model.user_balance import UserBalances
 from api.main import db
 from api.main.service.exceptions.commitment_exception import *
 from api.main.service.exceptions.rpc_exception import *
@@ -73,6 +75,7 @@ def verify_answers(user_id, answers):
                 commitments=to_save_history
             )
             history.save()
+            bs.subtract(user_id, to_retrieve)
             return response
         else:
             raise AnswersNotVerifiedException(response["message"])
