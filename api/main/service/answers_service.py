@@ -5,7 +5,7 @@ from time import sleep
 
 import api.main.service.commitments_service as cs
 import api.main.service.balance_service as bs
-from api.main.service.rpc_service import RpcClient
+from api.main.service.rpc_service import get_client
 from api.main.model.user_commitments import UserCommitments
 from api.main.model.commitments_history import CommitmentsHistory
 from api.main.model.user_balance import UserBalances
@@ -16,16 +16,6 @@ from api.main.service.exceptions.answer_exception import *
 from api.main.util import logger
 
 CONCAT = "|"
-
-def get_client():
-    client = None
-    rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
-    rabbit_mq_rpc_queue = os.getenv('RABBIT_MQ_QUEUE')
-    if rabbit_mq_rpc_queue is None:
-        rabbit_mq_rpc_queue = 'rpc_queue'
-    if rabbit_mq_url:
-        client = RpcClient(rabbit_mq_url, rabbit_mq_rpc_queue)
-    return client
 
 def verify_answers(user_id, answers):
     user_coms = cs.get_commitments_by_user_id(user_id)

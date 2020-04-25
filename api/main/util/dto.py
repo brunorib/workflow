@@ -24,3 +24,12 @@ class BalanceDto:
     ingress = api.model('ingress', {
         'amount': fields.Integer(required=True, description='quantity to ingress in the bank'),
     })
+    token = api.model('token', {
+        'signature': fields.String(required=True, description='unblinded signature of token'),
+        'amount': fields.String(required=True, description='amount token to ingress'),
+        'id': fields.String(required=True, description='id of token'),
+    })
+    token_payload = api.model('token_payload', {
+        'user_id': fields.Integer(required=True, description='user which performed the consuming'),
+        'token': fields.Nested(token)
+    })
