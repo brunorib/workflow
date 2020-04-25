@@ -6,6 +6,7 @@ from api.main.util.dto import AnswersDto
 import api.main.service.answers_service as ans
 from api.main.service.exceptions.commitment_exception import *
 from api.main.service.exceptions.answer_exception import *
+from api.main.model.exceptions.balance_exception import *
 api = AnswersDto.api
 _answers = AnswersDto.answers
 
@@ -17,5 +18,5 @@ class AnswerList(Resource):
         data = request.json
         try:
             return ans.verify_answers(user_id=data['user_id'], answers=data['answers'])
-        except (MaxAllowedRenewalsException, NoCommitmentException, IncorrectLengthException, AnswersNotVerifiedException, AnswersDifferException) as e:
+        except (MaxAllowedRenewalsException, NoCommitmentException, IncorrectLengthException, AnswersNotVerifiedException, AnswersDifferException, NoSufficientMoneyException) as e:
             return api.abort(422, custom=str(e))
