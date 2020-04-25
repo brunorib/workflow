@@ -18,12 +18,10 @@ def consume_token(user_id, token):
     logger.info("Started getting AMQP Client")
     RPC_CLIENT = get_client()
     if RPC_CLIENT:
-        request = {
-            "action": "verify",
-        }
-        request['payload'] = token
+        request = { "action": "verify", "payload": None }
+        request['payload'].update(token)
 
-        logger.info("Sending request")
+        logger.info("Sending request %s"%json.dumps(request))
         corr_id = RPC_CLIENT.send_request(json.dumps(request))
 
         # Wait until we have received a response.
