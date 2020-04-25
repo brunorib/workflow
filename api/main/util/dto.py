@@ -22,5 +22,5 @@ class AnswersDto:
 class BalanceDto:
     api = Namespace('balances', description='balances representing each users money')
     ingress = api.model('ingress', {
-        'amount': fields.String(required=True, description='quantity to ingress in the bank'),
+        'amount': fields.Integer(required=True, description='quantity to ingress in the bank'),
     })
