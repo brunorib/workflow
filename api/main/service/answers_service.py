@@ -91,6 +91,7 @@ def validate_consistency(answers):
         val =  get_value_answer(answer)
         if val != to_retrieve:
             return -1
+    return to_retrieve
 
 def get_value_answer(answer):
     return int(answer['amount'].split(CONCAT)[0])
