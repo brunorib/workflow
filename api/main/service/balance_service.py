@@ -20,10 +20,8 @@ def consume_token(user_id, token):
     if RPC_CLIENT:
         request = {
             "action": "verify",
-            "payload": {
-                token
-            },
         }
+        request['payload'] = token
 
         logger.info("Sending request")
         corr_id = RPC_CLIENT.send_request(json.dumps(request))
