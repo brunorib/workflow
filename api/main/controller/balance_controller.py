@@ -16,11 +16,11 @@ class Balance(Resource):
     @api.doc('get a user balance')
     def get(self, id):
         balance = bs.get_balance_by_user_id(id)
-        return to_json(balance)
+        return balance.to_json()
     
     @api.doc('Ingress money on the user balance')
     @api.expect(_ingress, validate=True)
     def put(self, id):
         data = request.json
         balance = bs.ingress(id, data['amount'])
-        return to_json(balance)
+        return balance.to_json()

@@ -1,5 +1,4 @@
 # api/models.py
-import json
 from api.main import db
 from api.main.model.exceptions.balance_exception import NoSufficientMoneyException
 
@@ -22,6 +21,12 @@ class UserBalances(db.Model):
             self.money -= amount
         else:
             raise NoSufficientMoneyException("Not enough money to subtract")
+
+    def to_json():
+        return {
+            'user_id': self.user_id,
+            'money': self.money
+        }
 
     def save(self):
         db.session.add(self)
