@@ -22,7 +22,7 @@ class UserBalances(db.Model):
         else:
             raise NoSufficientMoneyException("Not enough money to subtract")
 
-    def to_json():
+    def to_json(self):
         return {
             'user_id': self.user_id,
             'money': self.money
