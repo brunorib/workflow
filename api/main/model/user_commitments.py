@@ -11,6 +11,8 @@ class UserCommitments(db.Model):
     to_exclude = db.Column(db.Integer)
     count = db.Column(db.Integer)
 
+    MAX_ALLOWED_RENEWALS=3
+
     def __init__(self, user_id, commitments, to_exclude, count):
         self.user_id = user_id
         self.commitments = json.dumps(commitments)

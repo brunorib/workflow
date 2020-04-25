@@ -13,6 +13,8 @@ from api.main.service.exceptions.rpc_exception import *
 from api.main.service.exceptions.answer_exception import *
 from api.main.util import logger
 
+CONCAT = "|"
+
 def get_client():
     client = None
     rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
@@ -31,6 +33,11 @@ def verify_answers(user_id, answers):
     commitments = user_coms.get_commitments()
     to_save_history = commitments.copy()
     validate_length(answers, commitments)
+    
+    to_retrieve = validate_consistency(answers)
+    if to_retrieve < 0:
+        block_user(user_coms)
+        raise AnswersDifferException('Values are not the same on all answers, user will be blocked.')
 
     to_blind_sign = commitments.pop(user_coms.to_exclude)
 
@@ -77,3 +84,17 @@ def validate_length(answers, coms):
     answers_should = len(coms)-1
     if len(answers) != answers_should:
         raise IncorrectLengthException("Invalid answers length, should be %d and is %s"%(answers_should, len(answers)))
+
+def validate_consistency(answers):
+    to_retrieve = get_value_answer(answers[0])
+    for answer in answers[1:]:
+        val =  get_value_answer(answer)
+        if val != to_retrieve:
+            return -1
+
+def get_value_answer(answer):
+    return int(answer['amount'].split(CONCAT)[0])
+
+def block_user(user_commitments):
+    user_commitments.count = UserCommitments.MAX_ALLOWED_RENEWALS + 1
+    user_commitments.save()
