@@ -3,7 +3,6 @@ import json
 from flask import request
 from flask_restplus import Resource
 
-from api.main.util.to_json import to_json
 from api.main.util.dto import BalanceDto
 import api.main.service.balance_service as bs
 api = BalanceDto.api
