@@ -31,7 +31,7 @@ class Balance(Resource):
 class TokenConsumer(Resource):
     @api.doc('Ingress money with token on the user balance')
     @api.expect(_token_payload, validate=True)
-    def post(self, id):
+    def post(self):
         data = request.json
         try:
             balance = bs.consume_token(user_id=data['user_id'], token=data['token'])
