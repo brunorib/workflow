@@ -16,7 +16,7 @@ def ingress(user_id, amount):
 def subtract(user_id, amount):
     logger.debug("Subtracting amount to user's balance")
     current = get_balance_by_user_id(user_id)
-    current.subtract(amount)
+    current.subtract_money(amount)
     current.save()
     logger.debug("Successfully subtracted")
     return current
