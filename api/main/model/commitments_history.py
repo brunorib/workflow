@@ -6,6 +6,7 @@ class CommitmentsHistory(db.Model):
     """This class represents the hisotry of successful commitments for a user."""
     __tablename__ = 'history'
 
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
     commitments = db.Column(db.JSON)
 
