@@ -17,7 +17,7 @@ class UserBalances(db.Model):
         self.money += amount
     
     def subtract_money(self, amount):
-        if amount < self.money:
+        if amount <= self.money:
             self.money -= amount
         else:
             raise NoSufficientMoneyException("Not enough money to subtract")
