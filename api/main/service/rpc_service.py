@@ -40,7 +40,7 @@ class RpcClient(object):
 
     def _process_data_events(self):
         """Process Data Events using the Process Thread."""
-        while not self.listening_thread.stopped():
+        while not self.listening_thread._is_stopped:
             self.channel.start_consuming()
 
     def _on_response(self, message):
