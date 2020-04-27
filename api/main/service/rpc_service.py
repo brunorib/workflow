@@ -3,8 +3,9 @@ import threading
 
 import amqpstorm
 from amqpstorm import Message
-from api.main.util.stoppable_thread import StoppableThread
 from api.main.util import logger
+
+client = None
 
 class RpcClient(object):
     """Asynchronous Rpc client."""
@@ -36,21 +37,19 @@ class RpcClient(object):
         """Create a thread responsible for consuming messages in response
          to RPC requests.
         """
-        self.listening_thread = StoppableThread(target=self._process_data_events)
-        self.listening_thread.setDaemon(True)
-        self.listening_thread.start()
+        listening_thread = threading.Thread(target=self._process_data_events)
+        listening_thread.setDaemon(True)
+        listening_thread.start()
 
     def _process_data_events(self):
         """Process Data Events using the Process Thread."""
-        while not self.listening_thread.stopped():
-            self.channel.start_consuming()
+        self.channel.start_consuming()
 
     def _on_response(self, message):
         """On Response store the message with the correlation id in a local
          dictionary.
         """
         self.queue[message.correlation_id] = message.body
-        self.stop = True
 
     def send_request(self, payload):
         # Create the Message object.
@@ -67,19 +66,14 @@ class RpcClient(object):
         # Return the Unique ID used to identify the request.
         return message.correlation_id
     
-    def close(self):
-        self.listening_thread.stopit()
-        logger.info("Stopped thread")
-        self.listening_thread.join()
-        logger.info("Joined thread")
-        self.connection.close()
-    
 def get_client():
-    client = None
-    rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
-    rabbit_mq_rpc_queue = os.getenv('RABBIT_MQ_QUEUE')
-    if rabbit_mq_rpc_queue is None:
-        rabbit_mq_rpc_queue = 'rpc_queue'
-    if rabbit_mq_url:
-        client = RpcClient(rabbit_mq_url, rabbit_mq_rpc_queue)
+    if not client:
+        rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
+        rabbit_mq_rpc_queue = os.getenv('RABBIT_MQ_QUEUE')
+        if rabbit_mq_rpc_queue is None:
+            rabbit_mq_rpc_queue = 'rpc_queue'
+        if rabbit_mq_url:
+            client_inst = RpcClient(rabbit_mq_url, rabbit_mq_rpc_queue)
+        client = client_inst
+
     return client

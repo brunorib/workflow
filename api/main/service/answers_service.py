@@ -57,7 +57,6 @@ def verify_answers(user_id, answers):
         logger.info("Received response")
         # Return the response to the user.
         response = json.loads(RPC_CLIENT.queue[corr_id])
-        RPC_CLIENT.close()
         if 'blind_signature' in response:
             logger.info("Answers verified successfully")
             user_coms.delete()
