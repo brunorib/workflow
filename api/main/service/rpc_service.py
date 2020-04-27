@@ -3,6 +3,8 @@ import threading
 
 import amqpstorm
 from amqpstorm import Message
+from api.main.util.stoppable_thread import StoppableThread
+from api.main.util import logger
 
 class RpcClient(object):
     """Asynchronous Rpc client."""
@@ -34,22 +36,20 @@ class RpcClient(object):
         """Create a thread responsible for consuming messages in response
          to RPC requests.
         """
-        self.listening_thread  = threading.Thread(target=self._process_data_events)
+        self.listening_thread = StoppableThread(target=self._process_data_events)
         self.listening_thread.setDaemon(True)
-        self.listening_thread.do_run = True
         self.listening_thread.start()
 
     def _process_data_events(self):
         """Process Data Events using the Process Thread."""
-        t = threading.currentThread()
-        while getattr(t, "do_run", True):
-            self.channel.start_consuming()
+        self.channel.start_consuming()
 
     def _on_response(self, message):
         """On Response store the message with the correlation id in a local
          dictionary.
         """
         self.queue[message.correlation_id] = message.body
+        self.stop = True
 
     def send_request(self, payload):
         # Create the Message object.
@@ -67,8 +67,10 @@ class RpcClient(object):
         return message.correlation_id
     
     def close(self):
-        self.listening_thread.do_run = False
+        self.listening_thread.stopit()
+        logger.info("Stopped thread")
         self.listening_thread.join()
+        logger.info("Joined thread")
         self.connection.close()
     
 def get_client():
