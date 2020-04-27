@@ -64,7 +64,7 @@ class RpcClient(object):
         # Return the Unique ID used to identify the request.
         return message.correlation_id
 
-
+client = None
 rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
 rabbit_mq_rpc_queue = os.getenv('RABBIT_MQ_QUEUE')
 if rabbit_mq_rpc_queue is None:
