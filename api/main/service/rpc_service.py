@@ -13,6 +13,7 @@ class RpcClient(object):
         self.channel = None
         self.connection = None
         self.callback_queue = None
+        self.listening_thread = None
         self.rpc_queue = rpc_queue
         self.open()
 
@@ -33,9 +34,9 @@ class RpcClient(object):
         """Create a thread responsible for consuming messages in response
          to RPC requests.
         """
-        thread = threading.Thread(target=self._process_data_events)
-        thread.setDaemon(True)
-        thread.start()
+        self.listening_thread  = threading.Thread(target=self._process_data_events)
+        self.listening_thread.setDaemon(True)
+        self.listening_thread.start()
 
     def _process_data_events(self):
         """Process Data Events using the Process Thread."""
@@ -61,6 +62,10 @@ class RpcClient(object):
 
         # Return the Unique ID used to identify the request.
         return message.correlation_id
+    
+    def close(self):
+        self.connection.close()
+        self.listening_thread.join()
     
 def get_client():
     client = None
