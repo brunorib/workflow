@@ -64,8 +64,8 @@ class RpcClient(object):
         return message.correlation_id
     
     def close(self):
-        self.connection.close()
         self.listening_thread.join()
+        self.connection.close()
     
 def get_client():
     client = None
