@@ -35,7 +35,7 @@ class RpcClient(object):
          to RPC requests.
         """
         self.stop_event = threading.Event()
-        self.listening_thread  = threading.Thread(target=self._process_data_events, args=(self.stop_event))
+        self.listening_thread  = threading.Thread(target=self._process_data_events, args=(self.stop_event,))
         self.listening_thread.setDaemon(True)
         self.listening_thread.start()
 
