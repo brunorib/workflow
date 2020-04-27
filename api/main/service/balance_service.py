@@ -6,7 +6,7 @@ from time import sleep
 from api.main.model.user_balance import UserBalances
 from api.main import db
 from api.main.util import logger
-from api.main.service.rpc_service import get_client
+from api.main.service.rpc_service import client as RPC_CLIENT
 from api.main.service.exceptions.rpc_exception import *
 from api.main.service.exceptions.balance_exception import *
 
@@ -17,7 +17,6 @@ def consume_token(user_id, token):
 
      # AMQP CONNECTION TO WORKER
     logger.info("Started getting AMQP Client")
-    RPC_CLIENT = get_client()
     if RPC_CLIENT:
         request = { "action": "verify" }
         request['payload'] = token

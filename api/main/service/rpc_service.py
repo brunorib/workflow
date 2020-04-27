@@ -5,8 +5,6 @@ import amqpstorm
 from amqpstorm import Message
 from api.main.util import logger
 
-client = None
-
 class RpcClient(object):
     """Asynchronous Rpc client."""
 
@@ -65,15 +63,11 @@ class RpcClient(object):
 
         # Return the Unique ID used to identify the request.
         return message.correlation_id
-    
-def get_client():
-    if not client:
-        rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
-        rabbit_mq_rpc_queue = os.getenv('RABBIT_MQ_QUEUE')
-        if rabbit_mq_rpc_queue is None:
-            rabbit_mq_rpc_queue = 'rpc_queue'
-        if rabbit_mq_url:
-            client_inst = RpcClient(rabbit_mq_url, rabbit_mq_rpc_queue)
-        client = client_inst
 
-    return client
+
+rabbit_mq_url = os.getenv('RABBIT_MQ_URL')
+rabbit_mq_rpc_queue = os.getenv('RABBIT_MQ_QUEUE')
+if rabbit_mq_rpc_queue is None:
+    rabbit_mq_rpc_queue = 'rpc_queue'
+if rabbit_mq_url:
+    client = RpcClient(rabbit_mq_url, rabbit_mq_rpc_queue)

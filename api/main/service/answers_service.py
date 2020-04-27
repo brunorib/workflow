@@ -5,7 +5,7 @@ from time import sleep
 
 import api.main.service.commitments_service as cs
 import api.main.service.balance_service as bs
-from api.main.service.rpc_service import get_client
+from api.main.service.rpc_service import client as RPC_CLIENT
 from api.main.model.user_commitments import UserCommitments
 from api.main.model.commitments_history import CommitmentsHistory
 from api.main.model.user_balance import UserBalances
@@ -35,7 +35,6 @@ def verify_answers(user_id, answers):
 
     # AMQP CONNECTION TO WORKER
     logger.info("Started getting AMQP Client")
-    RPC_CLIENT = get_client()
     if RPC_CLIENT:
         request = {
             "action": "checkFair",
