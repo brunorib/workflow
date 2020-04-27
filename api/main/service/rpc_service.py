@@ -34,7 +34,8 @@ class RpcClient(object):
         """Create a thread responsible for consuming messages in response
          to RPC requests.
         """
-        self.listening_thread  = threading.Thread(target=self._process_data_events)
+        self.stop_event = threading.Event()
+        self.listening_thread  = threading.Thread(target=self._process_data_events, args=(self.stop_event))
         self.listening_thread.setDaemon(True)
         self.listening_thread.start()
 
@@ -65,7 +66,7 @@ class RpcClient(object):
         return message.correlation_id
     
     def close(self):
-        self.listening_thread._stop()
+        self.stop_event.set()
         self.listening_thread.join()
         self.connection.close()
     
