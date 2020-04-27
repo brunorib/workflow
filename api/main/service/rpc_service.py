@@ -42,7 +42,8 @@ class RpcClient(object):
 
     def _process_data_events(self):
         """Process Data Events using the Process Thread."""
-        self.channel.start_consuming()
+        while not self.listening_thread.stopped():
+            self.channel.start_consuming()
 
     def _on_response(self, message):
         """On Response store the message with the correlation id in a local
