@@ -25,7 +25,7 @@ class CommitmentsHistory(db.Model):
         for com in commitments[1:]:
             str_to_be_hash += "|" + com
         m = hashlib.sha256()
-        m.update(str_to_be_hash)
+        m.update(str_to_be_hash.encode('utf-8'))
         return m.hexdigest()
 
     def save(self):
