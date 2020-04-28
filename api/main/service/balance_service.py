@@ -16,7 +16,7 @@ CONCAT = "|"
 def consume_token(user_id, token):
     logger.debug("Adding amount to user's balance")
 
-    hist = get_history(token['signature'])
+    hist = get_history(token['id'], token['signature'])
     if hist:
         if hist.user_id == user_id:
             raise TokenAlreadyConsumedException("You have already consumed this money")
@@ -45,6 +45,7 @@ def consume_token(user_id, token):
             current = get_balance_by_user_id(user_id)
             current.add_money(amount_to_add)
             current.save()
+            add_to_history(user_id, token)
             logger.debug("Successfully added")
             
             return current
@@ -83,6 +84,13 @@ def get_balance_by_user_id(id):
 def get_amount(amount):
     return int(amount.split(CONCAT)[0])
 
-def get_history(signature):
-    return SignaturesHistory.query.filter_by(signature=signature).first()
+def get_history(token_id, signature):
+    return SignaturesHistory.query.filter_by(signature=signature, token_id=token_id).first()
 
+def add_to_history(user_id, token):
+    hist = SignaturesHistory(
+        user_id=user_id,
+        token_id=token['id'],
+        signature=token['signature']
+    )
+    hist.save()
