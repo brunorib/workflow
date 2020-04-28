@@ -10,7 +10,7 @@ from api.main.util import logger
 def save_commitment(user_id, commitments):
     validate_length(commitments)
 
-    done_commitments = get_commitments_history(user_id)
+    done_commitments = get_commitments_history(user_id, commitments)
     if done_commitments:
         for done_commitment in done_commitments:
             com = done_commitment.get_commitments()
@@ -43,8 +43,12 @@ def get_commitments_by_user_id(id):
     return UserCommitments.query.filter_by(user_id=id).first()
 
 
-def get_commitments_history(id):
-    return CommitmentsHistory.query.filter_by(user_id=id)
+def get_commitments_history(id, coms):
+    history = CommitmentsHistory(
+        user_id=id,
+        commitments=coms
+    )
+    return CommitmentsHistory.query.filter_by(user_id=id, com_hash=history.com_hash)
 
 def get_random():
     return random.randint(0, get_k()-1)
