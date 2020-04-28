@@ -4,6 +4,7 @@ import json
 from time import sleep
 
 from api.main.model.user_balance import UserBalances
+from api.main.model.signatures_history import SignaturesHistory
 from api.main import db
 from api.main.util import logger
 from api.main.service.rpc_service import client as RPC_CLIENT
@@ -14,6 +15,13 @@ CONCAT = "|"
 
 def consume_token(user_id, token):
     logger.debug("Adding amount to user's balance")
+
+    hist = get_history(token['signature'])
+    if hist:
+        if hist.user_id == user_id:
+            raise TokenAlreadyConsumedException("You have already consumed this money")
+        else:
+            raise TokenWasConsumedByOtherUserException("This token was consumed by another user, please contact with your payer to have more information")
 
      # AMQP CONNECTION TO WORKER
     logger.info("Started getting AMQP Client")
@@ -74,4 +82,7 @@ def get_balance_by_user_id(id):
 
 def get_amount(amount):
     return int(amount.split(CONCAT)[0])
+
+def get_history(signature):
+    return SignaturesHistory.query.filter_by(signature=signature).first()
 

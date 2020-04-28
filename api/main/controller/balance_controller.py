@@ -36,5 +36,5 @@ class TokenConsumer(Resource):
         try:
             balance = bs.consume_token(user_id=data['user_id'], token=data['token'])
             return balance.to_json()
-        except TokenNotVerifiedException as e:
+        except (TokenNotVerifiedException, TokenWasConsumedByOtherUserException, TokenAlreadyConsumedException) as e:
             api.abort(422, custom=str(e))
